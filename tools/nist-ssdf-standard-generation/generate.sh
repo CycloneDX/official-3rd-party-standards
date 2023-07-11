@@ -9,7 +9,7 @@ echo "Generating SSDF"
 poetry run attestation_generator
 
 echo "Checking json compliance"
-cat ssdf-1.1.json | jq empty
+cat ssdf-1.1.cdx.json | jq empty
 
 echo "Moving SSDF over to standards folder"
-mv ssdf-1.1.json ../../standards/NIST_SSDF/nist_secure-software-development-framework_1.1.json
+mv ssdf-1.1.cdx.json ../../standards/NIST_SSDF/nist_secure-software-development-framework_1.1.cdx.json

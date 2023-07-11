@@ -115,7 +115,7 @@ def generator():
         groups=groups.values(),
         autoescape=True,
     )
-    with open("ssdf-1.1.json", mode="w", encoding="utf-8") as message:
+    with open("ssdf-1.1.cdx.json", mode="w", encoding="utf-8") as message:
         message.write(content)
 
 
