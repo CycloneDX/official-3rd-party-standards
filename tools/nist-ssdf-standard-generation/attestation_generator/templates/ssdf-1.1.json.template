@@ -1,0 +1,57 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "{{serialNumber}}",
+  "version": 1,
+  "metadata": {
+    "manufacture": {
+      "name": "OWASP Foundation",
+      "url": [
+        "https://owasp.org/",
+        "https://cyclonedx.org/",
+        "https://github.com/CycloneDX/official-3rd-party-standards"
+      ]
+    }
+  },
+  "declarations": {
+    "standards": [
+      {
+        "bom-ref": "{{standard.identifier}}",
+        "name": "{{standard.name}}",
+        "description": "{{standard.description}}",
+        "version": "{{standard.version}}",
+        "owner": "{{standard.owner}}",
+        "requirements": [
+{% for group in groups %}{% with standard=standard, requirement=group %}{% include 'requirement.template' %},{% endwith %}
+{% for practice in group.practices %}{% with standard=standard, parent=group, requirement=practice %}{% include 'requirement.template' %},{% endwith %}
+{% for task in practice.tasks %}{% with standard=standard, parent=practice, requirement=task %}{% include 'requirement.template' %}{% endwith %}{{ "," if not loop.last else "" }}{% endfor %}{{ "," if not loop.last else "" }}{% endfor %}{{ "," if not loop.last else "" }}{% endfor %}
+        ],
+        "externalReferences:": [
+          {
+            "type": "documentation",
+            "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-218.pdf",
+            "comment": "NIST SP 800-218",
+            "hashes": [
+              {
+                "alg": "SHA3-256",
+                "content": "88b0683941e1fb5900dc2723555321320520c9d9075b4c82163545992d6389fd"
+              }
+            ]
+          },
+          {
+            "type": "documentation",
+            "url": "https://csrc.nist.gov/csrc/media/Publications/sp/800-218/final/documents/NIST.SP.800-218.SSDF-table.xlsx",
+            "comment": "NIST SP 800-218 in excel",
+            "hashes": [
+              {
+                "alg": "SHA3-256",
+                "content": "260d88cf62c8742116a7be95e9257848e836eb11ecd8779b0099efd3a25422e7"
+              }
+            ]
+          }
+        ],
+        "signature": {}
+      }
+    ]
+  }
+}
