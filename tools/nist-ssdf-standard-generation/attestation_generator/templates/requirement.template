@@ -1,0 +1,12 @@
+          {
+            "bom-ref": "{{standard.identifier}}-{{requirement.identifier}}",
+            "identifier": "{{requirement.identifier}}",
+            "text": "{{requirement.description}}",{% if parent is defined %}
+            "parent": "{{standard.identifier}}-{{parent.identifier}}",{% endif %}
+            "externalReferences": [
+              {
+                "type": "documentation",
+                "url": "{{standard.url}}#{{requirement.coordinate}}"
+              }
+            ]
+          }
