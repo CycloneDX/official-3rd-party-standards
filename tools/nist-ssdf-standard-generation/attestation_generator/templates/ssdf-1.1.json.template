@@ -30,7 +30,7 @@
       ]
     }
   },
-  "declarations": {
+  "definitions": {
     "standards": [
       {
         "bom-ref": "{{standard.identifier}}",

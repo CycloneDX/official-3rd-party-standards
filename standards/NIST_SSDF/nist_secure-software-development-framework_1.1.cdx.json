@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:bd6b4d9e-6f83-4801-bddc-528a54145238",
+  "serialNumber": "urn:uuid:fe247348-f2cd-4d20-b943-bd4b0772e385",
   "version": 1,
   "metadata": {
     "licenses": [
@@ -30,7 +30,7 @@
       ]
     }
   },
-  "declarations": {
+  "definitions": {
     "standards": [
       {
         "bom-ref": "ssdf-1.1",
