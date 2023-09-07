@@ -1,7 +1,7 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:e73262cb-deaf-49e5-a586-29cafa0acfdf",
+  "serialNumber": "urn:uuid:e9f675f0-12f2-4001-a7f7-38d42a00d236",
   "version": 1,
   "metadata": {
     "licenses": [
@@ -22,7 +22,7 @@
       "url": [ "https://owasp.org/" ]
     }
   },
-  "declarations": {
+  "definitions": {
     "standards": [
       {
         "bom-ref": "bsimm-v13",

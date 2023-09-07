@@ -1,10 +1,10 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:bf02d8a8-a8bd-4ea9-9baa-f1cab14666ae",
+  "serialNumber": "urn:uuid:f9a467b9-8347-4d0d-8d76-7e7279d99484",
   "version": 1,
   "metadata": {
-    "timestamp": "2023-07-03T15:05:42-05:00",
+    "timestamp": "2023-09-06T22:15:29-05:00",
     "licenses": [
       {
         "license": {
@@ -20,7 +20,7 @@
       ]
     }
   },
-  "declarations": {
+  "definitions": {
     "standards": [
       {
         "bom-ref": "ASVS-4.0.3",

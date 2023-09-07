@@ -1,10 +1,10 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:9c4352c1-850d-4ebf-ab7c-87fd5ae6008b",
+  "serialNumber": "urn:uuid:8d0d5d1e-6a4d-4c1e-ad6c-314108f38a7d",
   "version": 1,
   "metadata": {
-    "timestamp": "2023-07-05T18:08:21-05:00",
+    "timestamp": "2023-09-06T22:38:02-05:00",
     "licenses": [
       {
         "license": {
@@ -20,7 +20,7 @@
       ]
     }
   },
-  "declarations": {
+  "definitions": {
     "standards": [
       {
         "bom-ref": "SCVS-1.0",
