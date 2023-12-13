@@ -1,0 +1,51 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "{{serialNumber}}",
+  "version": 1,
+  "metadata": {
+    "manufacture": {
+      "name": "Cybersecurity and Infrastructure Security Agency",
+      "url": [
+        "https://cisa.gov/"
+      ]
+    },
+    "supplier": {
+      "name": "OWASP Foundation",
+      "url": [
+        "https://owasp.org/",
+        "https://cyclonedx.org/",
+        "https://github.com/CycloneDX/official-3rd-party-standards"
+      ]
+    }
+  },
+  "definitions": {
+    "standards": [
+      {
+        "bom-ref": "{{standard.identifier}}",
+        "name": "{{standard.name}}",
+        "description": "{{standard.description}}",
+        "version": "{{standard.version}}",
+        "owner": "{{standard.owner}}",
+        "requirements": [
+{% for requirement in requirements %}{% with standard=standard %}{% include 'requirement.template' %}{% endwith %}{{ "," if not loop.last else "" }}
+{% for sub_requirement in requirement.sub_requirements %}{% with standard=standard, requirement=sub_requirement, parent=requirement %}{% include 'requirement.template' %},{% endwith %}
+{% endfor %}{% endfor %}
+        ],
+        "externalReferences": [
+          {
+            "type": "documentation",
+            "url": "https://www.cisa.gov/sites/default/files/2023-11/Secure%20Software%20Development%20Attestation%20Form_508c.pdf",
+            "comment": "Secure Software Development Attestation Form_508c.pdf",
+            "hashes": [
+              {
+                "alg": "SHA3-256",
+                "content": "438c9f431b0a73ed4eee432c6e25d521ce3932eaeee6fcc52928dbbb36694aa1"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
