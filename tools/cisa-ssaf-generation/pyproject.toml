@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "nist-ssdf-cyclonedx-attestation"
+version = "0.1.0"
+description = "Python script for generating a CycloneDX Attestation for NIST SSDF"
+authors = ["Ian Dunbar-Hall <ian.dunbar-hall@lmco.com>"]
+readme = "README.md"
+packages = [{include = "attestation_generator"}]
+
+[tool.poetry.scripts]
+attestation_generator = "attestation_generator.main:generator"
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+install = "^1.3.5"
+jinja2 = "^3.1.2"
+pyyaml = "^6.0.1"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+pylint = "^2.17.4"
+isort = "^5.12.0"
+jsonschema = "^4.18.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

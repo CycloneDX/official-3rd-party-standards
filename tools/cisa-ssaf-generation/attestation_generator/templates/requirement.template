@@ -1,0 +1,10 @@
+          {
+            "bom-ref": "{{standard.identifier}}-{{requirement.identifier}}",
+            "identifier": "{{requirement.identifier}}",
+            "text": "{{requirement.text.replace('\n', ' ').replace('\r', '')}}",
+            "descriptions": [
+              "Related EO 14028 Subsection: {{requirement.eo14028}}",
+              "Related SSDF Practices and Tasks: {{requirement.ssdf}}"
+            ]{% if parent is defined %},
+            "parent": "{{standard.identifier}}-{{parent.identifier}}"{% endif %}
+          }
