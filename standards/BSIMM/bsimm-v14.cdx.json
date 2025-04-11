@@ -82,7 +82,7 @@
             "parent": "intelligence"
           },
           {
-            "bom-ref": "intelligence-sfd",
+            "bom-ref": "intelligence-sr",
             "title": "Intelligence: Standards & Requirements",
             "text": "The Standards & Requirements practice involves eliciting explicit software security requirements from the organization, determining which COTS tools to recommend, building standards for major security controls (such as authentication, input validation, and so on), creating security standards for technologies in use, and creating a standards review process.",
             "parent": "intelligence"
