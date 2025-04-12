@@ -147,7 +147,7 @@
           {
             "bom-ref": "SM2.1",
             "identifier": "SM2.1",
-            "title": "Publish data about software security internally and use it",
+            "title": "Publish data about software security internally and use it to drive change.",
             "text": "To facilitate improvement, data is published internally about the state of software security within the organization. Produce security or development dashboards with metrics for executives and software development management. Dashboards can be part of pipeline toolchains to enable developer self-improvement. Sometimes, this published data won’t be shared with everyone in the firm but only with the stakeholders who are tasked to drive change. In other cases, open book management and data published to all stakeholders helps everyone know what’s going on. If the organization’s culture promotes internal competition between groups, use this information to add a security dimension. Integrate automated security telemetry to gather measurements quickly and accurately to increase timeliness of security data in areas such as speed (e.g., time to fix) and quality (e.g., defect density). Publishing data about new technologies (e.g., security and risk in cloud-native architectures) is important for identifying needed improvements.",
             "parent": "governance-sm"
           },
@@ -610,7 +610,7 @@
             "bom-ref": "AA2.4",
             "identifier": "AA2.4",
             "title": "Have SSG lead design review efforts.",
-            "text": "The SSG takes a lead role in performing design review (see [AA1.2]) to uncover flaws. Breaking down an architecture is enough of an art that the SSG, or other reviewers outside the application team, must be proficient, and proficiency requires practice. This practice might then enable, e.g., champions to take the day-to-day lead while the SSG maintains leadership around knowledge and process. The SSG can’t be successful on its own either—it will likely need help from architects or implementers to understand the design. With a clear design in hand, the SSG might be able to carry out a detailed review with a minimum of interaction with the project team. Approaches to design review evolve over time, so don’t expect to set a process and use it forever. Outsourcing design review might be necessary, but it’s also an opportunity to participate and learn",
+            "text": "The SSG takes a lead role in performing design review (see [AA1.2]) to uncover flaws. Breaking down an architecture is enough of an art that the SSG, or other reviewers outside the application team, must be proficient, and proficiency requires practice. This practice might then enable, e.g., champions to take the day-to-day lead while the SSG maintains leadership around knowledge and process. The SSG can’t be successful on its own either—it will likely need help from architects or implementers to understand the design. With a clear design in hand, the SSG might be able to carry out a detailed review with a minimum of interaction with the project team. Approaches to design review evolve over time, so don’t expect to set a process and use it forever. Outsourcing design review might be necessary, but it’s also an opportunity to participate and learn.",
             "parent": "ssdl-touchpoints-aa"
           },
           {
