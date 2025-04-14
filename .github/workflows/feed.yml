@@ -1,0 +1,115 @@
+name: Generate Standards JSON Feed
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  generate-feed:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install cyclonedx-python-lib==9.1.0
+
+      - name: Generate JSON Feed
+        run: |
+          import json
+          import glob
+          import os
+          import subprocess
+          from datetime import datetime
+          from cyclonedx.parser import BaseParser
+          
+          def format_date_zulu(date_str):
+              try:
+                  dt = datetime.fromisoformat(date_str.rstrip('Z'))
+                  return dt.strftime('%Y-%m-%dT%H:%M:%SZ')
+              except ValueError:
+                  return '1970-01-01T00:00:00Z'
+          
+          feed_path = 'standards/feed.json'
+          
+          if os.path.exists(feed_path):
+              with open(feed_path, 'r', encoding='utf-8') as existing_feed:
+                  feed = json.load(existing_feed)
+          else:
+              feed = {
+                  "version": "https://jsonfeed.org/version/1.1",
+                  "title": "Open Standards Catalogue",
+                  "home_page_url": "https://cyclonedx.org/standards",
+                  "feed_url":  "https://cyclonedx.org/standards/feed.json",
+                  "description": "A feed containing open standards available in the CycloneDX format.",
+                  "icon": "https://cyclonedx.org/favicon.ico",
+                  "favicon": "https://cyclonedx.org/favicon.ico",
+                  "items": []
+              }
+          
+          existing_ids = {item['id'] for item in feed['items']}
+          
+          standards_files = glob.glob('standards/**/*.cdx.json', recursive=True)
+          
+          for filepath in standards_files:
+              standard_id = os.path.splitext(os.path.basename(filepath))[0]
+          
+              external_url = f"https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/{filepath}"
+          
+              title = summary = date_published = date_modified = tags = None
+          
+              with open(filepath, 'r', encoding='utf-8') as file:
+                  data = json.load(file)
+                  title = data.get('metadata', {}).get('component', {}).get('name', standard_id)
+                  summary = data.get('metadata', {}).get('component', {}).get('description', '')
+                  tags = data.get('metadata', {}).get('component', {}).get('keywords', [])
+          
+              first_commit_date = subprocess.check_output(['git', 'log', '--diff-filter=A', '--follow', '--format=%aI', '--', filepath]).decode().splitlines()
+              last_commit_date = subprocess.check_output(['git', 'log', '-1', '--format=%aI', '--', filepath]).decode().strip()
+          
+              date_published = format_date_zulu(first_commit_date[0]) if first_commit_date else format_date_zulu(data.get('metadata', {}).get('timestamp', '1970-01-01T00:00:00Z'))
+              date_modified = format_date_zulu(last_commit_date) if last_commit_date else date_published
+          
+              new_item = {
+                  "id": standard_id,
+                  "external_url": external_url,
+                  "title": title,
+                  "content_text": None,
+                  "summary": summary,
+                  "date_published": date_published,
+                  "date_modified": date_modified,
+                  "tags": tags
+              }
+          
+              feed['items'] = [item for item in feed['items'] if item['id'] != standard_id]
+              feed['items'].append(new_item)
+          
+          feed['items'].sort(key=lambda x: x['date_published'], reverse=True)
+          
+          with open(feed_path, 'w', encoding='utf-8') as feed_file:
+              json.dump(feed, feed_file, indent=2)
+
+        shell: python
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add standards/feed.json
+          if git diff-index --quiet HEAD; then
+            echo "No changes detected."
+          else
+            git commit -m "Update standards JSON feed"
+            git push
+          fi
