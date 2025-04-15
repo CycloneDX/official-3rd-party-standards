@@ -28,7 +28,7 @@ standards/
 ## The catalogue feed (`standards/feed.json`)
 
 * **Format:** [JSON Feed 1.1](https://www.jsonfeed.org/version/1.1) with a small CycloneDX extension.
-* **Deployed URL:** `https://cyclonedx.org/standards/feed.json`
+* **Deployed URL:** [https://cyclonedx.org/standards/feed.json](https://cyclonedx.org/standards/feed.json)
 
 ## Contributing a new standard
 Create standards/<Publisher>/<Standard‑Name>/.
