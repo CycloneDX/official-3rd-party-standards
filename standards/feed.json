@@ -9,7 +9,7 @@
   "items": [
     {
       "id": "secure-software-development-attestation-form",
-      "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/CISA/SSAF/ssaf-DRAFT-2023-11.cdx.json",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/CISA/SSAF/ssaf-DRAFT-2023-11.cdx.json",
       "title": "Secure Software Development Attestation Form",
       "content_text": null,
       "summary": "This self-attestation form identifies the minimum secure software development requirements a software producer must meet, and attest to meeting, before software subject to the requirements of M-22-18 and M-23-16 may be used by Federal agencies. This form is used by software producers to attest that the software they produce is developed in conformity with specified secure software development practices.",
@@ -29,7 +29,7 @@
     },
     {
       "id": "pci-secure-software-lifecycle-secure-slc-requirements-and-assessment-procedures",
-      "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/PCI_Security_Standards_Council/Secure_SLC/pcissc-secure-slc-1.1.cdx.json",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/PCI_Security_Standards_Council/Secure_SLC/pcissc-secure-slc-1.1.cdx.json",
       "title": "PCI Secure Software Lifecycle (Secure SLC) Requirements and Assessment Procedures",
       "content_text": null,
       "summary": "PCI Secure SLC provides a baseline of security requirements with corresponding assessment procedures and guidance to help software vendors design, develop, and maintain secure software throughout the software lifecycle.",
@@ -49,7 +49,7 @@
     },
     {
       "id": "secure-software-development-framework-ssdf-version-1-1",
-      "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/NIST/SSDF/nist_secure-software-development-framework_1.1.cdx.json",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/NIST/SSDF/nist_secure-software-development-framework_1.1.cdx.json",
       "title": "Secure Software Development Framework (SSDF) Version 1.1",
       "content_text": null,
       "summary": "NIST Special Publication 800-218",
@@ -69,7 +69,7 @@
     },
     {
       "id": "software-component-verification-standard-scvs-",
-      "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/OWASP/SCVS/scvs-1.0.0.cdx.json",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/OWASP/SCVS/scvs-1.0.0.cdx.json",
       "title": "Software Component Verification Standard (SCVS)",
       "content_text": null,
       "summary": "The Software Component Verification Standard is a grouping of controls, separated by control family, which can be used by architects, developers, security, legal, and compliance to define, build, and verify the integrity of their software supply chain.",
@@ -89,7 +89,7 @@
     },
     {
       "id": "mobile-application-security-verification-standard-masvs-",
-      "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/OWASP/MASVS/masvs-2.0.0.cdx.json",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/OWASP/MASVS/masvs-2.0.0.cdx.json",
       "title": "Mobile Application Security Verification Standard (MASVS)",
       "content_text": null,
       "summary": "The OWASP MASVS (Mobile Application Security Verification Standard) is the industry standard for mobile app security. It can be used by mobile software architects and developers seeking to develop secure mobile apps, as well as security testers to ensure completeness and consistency of test results.",
@@ -109,7 +109,7 @@
     },
     {
       "id": "application-security-verification-standard-asvs-",
-      "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/OWASP/ASVS/asvs-4.0.3.cdx.json",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/OWASP/ASVS/asvs-4.0.3.cdx.json",
       "title": "Application Security Verification Standard (ASVS)",
       "content_text": null,
       "summary": "The Application Security Verification Standard is a list of application security requirements or tests that can be used by architects, developers, testers, security professionals, tool vendors, and consumers to define, build, test and verify secure applications.",
@@ -129,7 +129,7 @@
     },
     {
       "id": "build-security-in-maturity-model-bsimm-",
-      "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v13.cdx.json",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v13.cdx.json",
       "title": "Build Security In Maturity Model (BSIMM)",
       "content_text": null,
       "summary": "The BSIMM activities are the individual controls used to construct or improve an SSI. They range through people, process, technology, and culture. You can use this information to choose which controls to apply within your initiative, then align your implementation strategy and metrics with your desired outcomes.",
@@ -149,7 +149,7 @@
     },
     {
       "id": "build-security-in-maturity-model-bsimm-",
-      "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v14.cdx.json",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v14.cdx.json",
       "title": "Build Security In Maturity Model (BSIMM)",
       "content_text": null,
       "summary": "The BSIMM activities are the individual controls used to construct or improve an SSI. They range through people, process, technology, and culture. You can use this information to choose which controls to apply within your initiative, then align your implementation strategy and metrics with your desired outcomes.",
@@ -169,7 +169,7 @@
     },
     {
       "id": "build-security-in-maturity-model-bsimm-",
-      "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v15.cdx.json",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v15.cdx.json",
       "title": "Build Security In Maturity Model (BSIMM)",
       "content_text": null,
       "summary": "The BSIMM activities are the individual controls used to construct or improve an SSI. They range through people, process, technology, and culture. You can use this information to choose which controls to apply within your initiative, then align your implementation strategy and metrics with your desired outcomes.",
