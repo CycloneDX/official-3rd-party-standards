@@ -21,174 +21,273 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Generate JSON Feed
+        shell: bash
         run: |
+          #!/bin/bash
           set -eo pipefail
-
-          # ─────────────────────────────────────────────────────────────
-          #  updated script (as provided)
-          # ─────────────────────────────────────────────────────────────
-
+          
+          # Enable debugging to see what's happening
+          set -x
+          
           # Set the output file path
           feed_path="standards/feed.json"
-
+          
           # Ensure the directory exists
           mkdir -p "$(dirname "$feed_path")"
-
+          
           # Function to convert any ISO 8601 timestamp to Zulu format
           to_zulu_time() {
             local timestamp="$1"
-            [[ "$timestamp" == *Z ]] && { echo "$timestamp"; return; }
-
+            # If timestamp is already in Zulu format or empty, return as is
+            if [[ "$timestamp" == *Z ]]; then
+              echo "$timestamp"
+              return
+            fi
+          
+            # If date command is available with GNU date format
             if date --version >/dev/null 2>&1; then
+              # GNU date
               date -u -d "$timestamp" "+%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "$timestamp"
             elif command -v gdate >/dev/null 2>&1; then
+              # GNU date installed as gdate (common on macOS)
               gdate -u -d "$timestamp" "+%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "$timestamp"
             elif date -j -f "%Y-%m-%dT%H:%M:%S%z" >/dev/null 2>&1; then
-              local formatted
-              formatted=$(echo "$timestamp" | sed -E 's/([0-9]{4}-[0-9]{2}-[0-9]{2})T([0-9]{2}:[0-9]{2}:[0-9]{2})([+-][0-9]{2}:[0-9]{2})/\1 \2 \3/')
-              date -j -u -f "%Y-%m-%d %H:%M:%S %z" "$formatted" "+%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "$timestamp"
+              # BSD date (macOS)
+              # Convert timestamp to format date -j can understand
+              local formatted_timestamp=$(echo "$timestamp" | sed -E 's/([0-9]{4}-[0-9]{2}-[0-9]{2})T([0-9]{2}:[0-9]{2}:[0-9]{2})([+-][0-9]{2}:[0-9]{2})/\1 \2 \3/')
+              date -j -u -f "%Y-%m-%d %H:%M:%S %z" "$formatted_timestamp" "+%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "$timestamp"
             else
+              # If we can't convert, return the original
               echo "$timestamp"
             fi
           }
-
+          
           # Function to determine mime type based on file extension
           get_mime_type() {
-            [[ "$1" == *.xml ]] && echo "application/vnd.cyclonedx+xml" || echo "application/vnd.cyclonedx+json"
+            local filepath="$1"
+            if [[ "$filepath" == *.json ]]; then
+              echo "application/vnd.cyclonedx+json"
+            elif [[ "$filepath" == *.xml ]]; then
+              echo "application/vnd.cyclonedx+xml"
+            else
+              # Default to JSON if unable to determine
+              echo "application/vnd.cyclonedx+json"
+            fi
           }
-
+          
           # Function to clean serialNumber (remove urn:uuid: prefix)
-          clean_serial_number() { echo "$1" | sed 's/^urn:uuid://'; }
-
+          clean_serial_number() {
+            local serial="$1"
+            # Remove urn:uuid: prefix if present
+            echo "$serial" | sed 's/^urn:uuid://g'
+          }
+          
           # Create a temporary file for new items
           new_items_file=$(mktemp)
           echo "Created temp file for new items: $new_items_file"
-
-          # Load existing feed (if any)
-          if [[ -s "$feed_path" ]]; then
-            echo "Found existing feed.json"
+          
+          # Check if feed.json already exists and load it
+          existing_feed=""
+          existing_items="[]"
+          if [ -f "$feed_path" ] && [ -s "$feed_path" ]; then
+            echo "Found existing feed.json, will preserve existing entries"
             existing_feed=$(cat "$feed_path")
-            existing_items=$(jq -c '.items // []' "$feed_path") || existing_items="[]"
+          
+            # Try to extract items from existing feed
+            existing_items_temp=$(jq -c '.items' "$feed_path" 2>/dev/null || echo "[]")
+            if [ "$existing_items_temp" != "null" ] && [ -n "$existing_items_temp" ]; then
+              existing_items=$existing_items_temp
+              echo "Extracted $(jq 'length' <<< "$existing_items") existing items"
+            else
+              echo "No valid items found in existing feed.json"
+              existing_items="[]"
+            fi
           else
-            echo "Creating new feed skeleton"
+            echo "No existing feed.json found, creating new one"
+            # Create basic feed structure
             existing_feed='{
-              "version":"https://jsonfeed.org/version/1.1",
-              "title":"Open Standards Catalogue",
-              "home_page_url":"https://cyclonedx.org/standards",
-              "feed_url":"https://cyclonedx.org/standards/feed.json",
-              "description":"A feed containing open standards available in the CycloneDX format.",
-              "icon":"https://cyclonedx.org/favicon.ico",
-              "favicon":"https://cyclonedx.org/favicon.ico",
-              "items":[]
+              "version": "https://jsonfeed.org/version/1.1",
+              "title": "Open Standards Catalogue",
+              "home_page_url": "https://cyclonedx.org/standards",
+              "feed_url": "https://cyclonedx.org/standards/feed.json",
+              "description": "A feed containing open standards available in the CycloneDX format.",
+              "icon": "https://cyclonedx.org/favicon.ico",
+              "favicon": "https://cyclonedx.org/favicon.ico",
+              "items": []
             }'
-            existing_items="[]"
           fi
-
-          # Check git availability
+          
+          # Check if git is available
           git_available=0
-          if command -v git >/dev/null 2>&1 && [[ -d .git ]]; then
-            git_available=1; echo "Git available for date extraction"
+          if command -v git >/dev/null 2>&1 && [ -d .git ]; then
+            git_available=1
+            echo "Git is available for date extraction"
           else
-            echo "Git not available; using metadata timestamps"
+            echo "Git is not available, will use metadata fallback"
           fi
-
-          default_date="1970-01-01T00:00:00Z"
-          mapfile -t cdx_files < <(find standards -type f -name '*.cdx.json')
+          
+          # Find CDX files 
+          cdx_files=($(find standards -type f -name '*.cdx.json'))
           echo "Found ${#cdx_files[@]} CDX files."
-
+          
+          # Default fallback date in Zulu format
+          default_date="1970-01-01T00:00:00Z"
+          
           # Process each CDX file
           for filepath in "${cdx_files[@]}"; do
             echo "Processing $filepath"
             external_url="https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/$filepath"
             mime_type=$(get_mime_type "$filepath")
-
-            # dates
-            if (( git_available )); then
-              raw_pub=$(git log --diff-filter=A --follow --format=%aI -- "$filepath" | tail -1)
-              raw_mod=$(git log -1 --format=%aI -- "$filepath")
+          
+            # Determine dates using git if available
+            if [ "$git_available" -eq 1 ]; then
+              # First commit date (creation date)
+              raw_date_published=$(git log --diff-filter=A --follow --format=%aI -- "$filepath" 2>/dev/null | tail -1)
+              # Last update date
+              raw_date_modified=$(git log -1 --format=%aI -- "$filepath" 2>/dev/null)
+          
+              # If git didn't return dates, use fallbacks
+              if [ -z "$raw_date_published" ]; then
+                echo "No git creation date found for $filepath, checking metadata..."
+                # Try to extract from metadata.timestamp
+                raw_date_published=$(jq -r '.metadata.timestamp // empty' "$filepath")
+                if [ -z "$raw_date_published" ]; then
+                  raw_date_published="$default_date"
+                fi
+              fi
+          
+              if [ -z "$raw_date_modified" ]; then
+                # If no modified date, use the published date
+                raw_date_modified="$raw_date_published"
+              fi
+            else
+              # No git, use metadata
+              raw_date_published=$(jq -r '.metadata.timestamp // empty' "$filepath")
+              if [ -z "$raw_date_published" ]; then
+                raw_date_published="$default_date"
+              fi
+              raw_date_modified="$raw_date_published"
             fi
-            [[ -z $raw_pub ]] && raw_pub=$(jq -r '.metadata.timestamp // empty' "$filepath")
-            [[ -z $raw_mod ]] && raw_mod="$raw_pub"
-            [[ -z $raw_pub ]] && raw_pub="$default_date"
-            [[ -z $raw_mod ]] && raw_mod="$default_date"
-
-            pub=$(to_zulu_time "$raw_pub")
-            mod=$(to_zulu_time "$raw_mod")
-
-            serial_raw=$(jq -r '.serialNumber // empty' "$filepath")
-            serial=$(clean_serial_number "$serial_raw")
-            bom_ver=$(jq -r '.version // "1"' "$filepath" | awk -F. '{print $1}')
-
+          
+            # Convert dates to Zulu format
+            date_published=$(to_zulu_time "$raw_date_published")
+            date_modified=$(to_zulu_time "$raw_date_modified")
+          
+            echo "Dates for $filepath: published=$date_published, modified=$date_modified"
+          
+            # Extract metadata from CDX file
+            raw_serial_number=$(jq -r '.serialNumber // empty' "$filepath")
+            # Clean serial number (remove urn:uuid: prefix)
+            serialNumber=$(clean_serial_number "$raw_serial_number")
+          
+            # Get the BOM version (integer from the root version)
+            bomVersion=$(jq -r '.version // "1"' "$filepath" | awk -F. '{print $1}')
+          
+            # Extract standards definitions with jq including metadata and attachments
+            # FIXED: changed "external_url" to "url" to match JSON Feed spec
             jq -c \
               --arg url "$external_url" \
-              --arg pub "$pub" \
-              --arg mod "$mod" \
+              --arg pub "$date_published" \
+              --arg mod "$date_modified" \
               --arg mime "$mime_type" \
-              --arg sn "$serial" \
-              --arg bv "$bom_ver" \
-              '
-              (.definitions.standards? // [])[] |
-              {
-                id: (if (.id // "") != "" then .id else (.name | gsub("[^A-Za-z0-9]+";"-") | ascii_downcase) end),
-                external_url: $url,
-                title: .name,
-                content_text: null,
-                summary: (.description // ""),
-                date_published: $pub,
-                date_modified: $mod,
-                _metadata: {
-                  bomLink: ("urn:cdx:" + $sn + "/" + $bv + "#" + (."bom-ref" // .id)),
-                  version: (.version // "1.0"),
-                  owner: (.owner // "")
+              --arg serialnum "$serialNumber" \
+              --arg bomver "$bomVersion" \
+              '(.definitions.standards? // [])[] | {
+                "id": (if (.id // "") != "" then .id else (.name | gsub("[^A-Za-z0-9]+"; "-") | ascii_downcase) end),
+                "url": $url,
+                "title": .name,
+                "content_text": null,
+                "summary": (.description // ""),
+                "date_published": $pub,
+                "date_modified": $mod,
+                "_metadata": {
+                  "bomLink": ("urn:cdx:" + $serialnum + "/" + $bomver + "#" + (."bom-ref" // .id)),
+                  "version": (.version // "1.0"),
+                  "owner": (.owner // "")
                 },
-                attachments: [
-                  { url: $url, mime_type: $mime }
+                "attachments": [
+                  {
+                    "url": $url,
+                    "mime_type": $mime
+                  }
                 ]
               }' "$filepath" >> "$new_items_file"
           done
-
+          
           echo "All CDX files processed."
-
-          new_items=$(jq -s '.' "$new_items_file")
-          new_ids=$(echo "$new_items" | jq -c 'map(.id)')
-          filtered_existing=$(echo "$existing_items" | jq --argjson ids "$new_ids" 'map(select(.id as $i | $ids | index($i) | not))')
-          existing_map=$(echo "$existing_items" | jq 'map({key:.id,value:.}) | from_entries')
-          processed_new=$(echo "$new_items" | jq --argjson m "$existing_map" 'map(if $m[.id] then $m[.id] else . end)')
-          combined=$(jq -n --argjson a "$filtered_existing" --argjson b "$processed_new" '$a+$b')
-          sorted=$(echo "$combined" | jq 'sort_by(.date_published) | reverse')
-
-          echo "$existing_feed" | jq --argjson items "$sorted" '.items=$items' > "$feed_path"
-
-          if [[ -s "$feed_path" ]]; then
-            echo "Feed successfully written to $feed_path"
-            echo "Size: $(wc -c <"$feed_path") bytes | Items: $(jq '.items|length' "$feed_path")"
-            echo "Items with _metadata: $(jq '.items|map(select(._metadata))|length' "$feed_path")"
-            echo "Items with attachments: $(jq '.items|map(select(.attachments))|length' "$feed_path")"
-          else
-            echo "ERROR: feed file empty." && exit 1
+          
+          # Output a sample to verify fields
+          echo "Sample of first extracted standard:"
+          if [ -s "$new_items_file" ]; then
+            head -n 1 "$new_items_file" | jq '.'
           fi
-
+          
+          # Create a new items array
+          new_items=$(jq -s '.' "$new_items_file")
+          echo "Generated $(jq 'length' <<< "$new_items") new items from CDX files."
+          
+          # Simplified merge approach
+          # 1. Extract IDs from new items
+          new_ids=$(jq -c 'map(.id)' <<< "$new_items")
+          
+          # 2. Create a filtered list of existing items (keeping those not in new_ids)
+          filtered_existing=$(jq --argjson new_ids "$new_ids" 'map(select(.id as $id | $new_ids | index($id) | not))' <<< "$existing_items")
+          
+          # 3. Combine filtered existing with new items
+          combined=$(jq -n --argjson a "$filtered_existing" --argjson b "$new_items" '$a + $b')
+          
+          # 4. Sort by date_published
+          sorted=$(jq 'sort_by(.date_published) | reverse' <<< "$combined")
+          
+          # 5. Create the final feed.json
+          echo "$existing_feed" | jq --argjson items "$sorted" '.items = $items' > "$feed_path"
+          
+          echo "Feed updated with merged items."
+          
+          # Verify the file has content
+          if [ -s "$feed_path" ]; then
+            echo "Feed successfully written to $feed_path"
+            echo "File size: $(wc -c < "$feed_path") bytes"
+            echo "Number of items: $(jq '.items | length' "$feed_path")"
+          
+            # Verify fields are present - FIXED: ensure we check these fields exist
+            metadata_count=$(jq '.items | map(has("_metadata")) | map(select(.)) | length' "$feed_path")
+            attachments_count=$(jq '.items | map(has("attachments")) | map(select(.)) | length' "$feed_path")
+            echo "Items with _metadata: $metadata_count"
+            echo "Items with attachments: $attachments_count"
+          
+            # Sample an item to verify structure
+            echo "Sample item from feed:"
+            jq '.items[0]' "$feed_path"
+          else
+            echo "Error: Feed file is empty at $feed_path"
+            exit 1
+          fi
+          
+          # Clean up
           rm "$new_items_file"
+          
+          # Turn off debugging
+          set +x
 
       - name: Commit and push if changed
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-
-          # Compare actual content changes
-          if [[ -f "standards/feed.json" ]]; then
-            # Force add to make sure we detect content changes
+          
+          # Check if feed.json exists
+          if [ -f "standards/feed.json" ]; then
             git add -f standards/feed.json
-
-            # Check if there are actual changes in content (not just timestamp)
-            if git diff --cached --name-only | grep -q "feed.json"; then
-              echo "Changes detected in feed.json"
+          
+            # Check for actual changes in content
+            if git diff --cached --quiet; then
+              echo "No changes to feed.json detected"
+            else
+              echo "Changes to feed.json detected, committing..."
               git commit -m "Update standards JSON feed"
               git push
-            else
-              echo "No changes detected in feed.json"
             fi
           else
-            echo "Feed.json file not found"
+            echo "ERROR: feed.json not found"
             exit 1
           fi
