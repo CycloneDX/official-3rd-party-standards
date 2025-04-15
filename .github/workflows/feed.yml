@@ -194,7 +194,7 @@ jobs:
               --arg bomver "$bomVersion" \
               '(.definitions.standards? // [])[] | {
                 "id": (if (.id // "") != "" then .id else (.name | gsub("[^A-Za-z0-9]+"; "-") | ascii_downcase) end),
-                "url": $url,
+                "external_url": $url,
                 "title": .name,
                 "content_text": null,
                 "summary": (.description // ""),
