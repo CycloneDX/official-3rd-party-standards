@@ -174,10 +174,21 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add standards/feed.json
-          if git diff-index --quiet HEAD; then
-            echo "No changes detected."
+
+          # Compare actual content changes
+          if [[ -f "standards/feed.json" ]]; then
+            # Force add to make sure we detect content changes
+            git add -f standards/feed.json
+
+            # Check if there are actual changes in content (not just timestamp)
+            if git diff --cached --name-only | grep -q "feed.json"; then
+              echo "Changes detected in feed.json"
+              git commit -m "Update standards JSON feed"
+              git push
+            else
+              echo "No changes detected in feed.json"
+            fi
           else
-            git commit -m "Update standards JSON feed"
-            git push
+            echo "Feed.json file not found"
+            exit 1
           fi
