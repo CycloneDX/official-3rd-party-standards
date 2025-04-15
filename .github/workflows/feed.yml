@@ -184,34 +184,33 @@ jobs:
             bomVersion=$(jq -r '.version // "1"' "$filepath" | awk -F. '{print $1}')
           
             # Extract standards definitions with jq including metadata and attachments
-            # FIXED: changed "external_url" to "url" to match JSON Feed spec
             jq -c \
-              --arg url "$external_url" \
-              --arg pub "$date_published" \
-              --arg mod "$date_modified" \
-              --arg mime "$mime_type" \
-              --arg serialnum "$serialNumber" \
-              --arg bomver "$bomVersion" \
-              '(.definitions.standards? // [])[] | {
-                "id": (if (.id // "") != "" then .id else (.name | gsub("[^A-Za-z0-9]+"; "-") | ascii_downcase) end),
-                "external_url": $url,
-                "title": .name,
-                "content_text": null,
-                "summary": (.description // ""),
-                "date_published": $pub,
-                "date_modified": $mod,
-                "_metadata": {
-                  "bomLink": ("urn:cdx:" + $serialnum + "/" + $bomver + "#" + (."bom-ref" // .id)),
-                  "version": (.version // "1.0"),
-                  "owner": (.owner // "")
-                },
-                "attachments": [
-                  {
-                    "url": $url,
-                    "mime_type": $mime
-                  }
-                ]
-              }' "$filepath" >> "$new_items_file"
+            --arg url "$external_url" \
+            --arg pub "$date_published" \
+            --arg mod "$date_modified" \
+            --arg mime "$mime_type" \
+            --arg serialnum "$serialNumber" \
+            --arg bomver "$bomVersion" \
+            '(.definitions.standards? // [])[] | {
+              "id": ((if (.id // "") != "" then .id else (.name | gsub("[^A-Za-z0-9]+"; "-") | ascii_downcase) end) + (if .version then ("@" + .version) else "" end)),
+              "external_url": $url,
+              "title": .name,
+              "content_text": null,
+              "summary": (.description // ""),
+              "date_published": $pub,
+              "date_modified": $mod,
+              "_metadata": {
+                "bomLink": ("urn:cdx:" + $serialnum + "/" + $bomver + "#" + (."bom-ref" // .id)),
+                "version": (.version // "1.0"),
+                "owner": (.owner // "")
+              },
+              "attachments": [
+                {
+                  "url": $url,
+                  "mime_type": $mime
+                }
+              ]
+            }' "$filepath" >> "$new_items_file"
           done
           
           echo "All CDX files processed."
