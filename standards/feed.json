@@ -69,22 +69,22 @@
     },
     {
       "id": "build-security-in-maturity-model-bsimm-",
-      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v13.cdx.json",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v15.cdx.json",
       "title": "Build Security In Maturity Model (BSIMM)",
       "content_text": null,
       "summary": "The BSIMM activities are the individual controls used to construct or improve an SSI. They range through people, process, technology, and culture. You can use this information to choose which controls to apply within your initiative, then align your implementation strategy and metrics with your desired outcomes.",
       "date_published": "2023-06-30T21:52:11Z",
-      "date_modified": "2023-09-07T03:44:40Z",
+      "date_modified": "2025-04-12T02:51:26Z",
       "tags": []
     },
     {
       "id": "build-security-in-maturity-model-bsimm-",
-      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v14.cdx.json",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v15.cdx.json",
       "title": "Build Security In Maturity Model (BSIMM)",
       "content_text": null,
       "summary": "The BSIMM activities are the individual controls used to construct or improve an SSI. They range through people, process, technology, and culture. You can use this information to choose which controls to apply within your initiative, then align your implementation strategy and metrics with your desired outcomes.",
       "date_published": "2023-06-30T21:52:11Z",
-      "date_modified": "2025-04-12T02:51:02Z",
+      "date_modified": "2025-04-12T02:51:26Z",
       "tags": []
     },
     {
