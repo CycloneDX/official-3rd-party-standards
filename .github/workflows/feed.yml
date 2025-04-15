@@ -290,3 +290,6 @@ jobs:
             echo "ERROR: feed.json not found"
             exit 1
           fi
+
+      - name: Trigger Cloudflare Deploy Hook
+        run: curl -X POST "${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}"
