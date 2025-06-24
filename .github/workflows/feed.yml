@@ -7,10 +7,15 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
+# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token
+permissions:
+  contents: {}
+
 jobs:
   generate-feed:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write # needed for pushing the changes
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
