@@ -128,26 +128,6 @@
       ]
     },
     {
-      "id": "build-security-in-maturity-model-bsimm-@14",
-      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v14.cdx.json",
-      "title": "Build Security In Maturity Model (BSIMM)",
-      "content_text": null,
-      "summary": "The BSIMM activities are the individual controls used to construct or improve an SSI. They range through people, process, technology, and culture. You can use this information to choose which controls to apply within your initiative, then align your implementation strategy and metrics with your desired outcomes.",
-      "date_published": "2023-06-30T21:52:11Z",
-      "date_modified": "2025-04-12T02:51:02Z",
-      "_metadata": {
-        "bomLink": "urn:cdx:ae8be72e-a3fe-42d3-a578-05af69a5bc45/1#bsimm-v14",
-        "version": "14",
-        "owner": "Synopsys, Inc."
-      },
-      "attachments": [
-        {
-          "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v14.cdx.json",
-          "mime_type": "application/vnd.cyclonedx+json"
-        }
-      ]
-    },
-    {
       "id": "build-security-in-maturity-model-bsimm-@15",
       "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v15.cdx.json",
       "title": "Build Security In Maturity Model (BSIMM)",
@@ -163,6 +143,26 @@
       "attachments": [
         {
           "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v15.cdx.json",
+          "mime_type": "application/vnd.cyclonedx+json"
+        }
+      ]
+    },
+    {
+      "id": "build-security-in-maturity-model-bsimm-@14",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v14.cdx.json",
+      "title": "Build Security In Maturity Model (BSIMM)",
+      "content_text": null,
+      "summary": "The BSIMM activities are the individual controls used to construct or improve an SSI. They range through people, process, technology, and culture. You can use this information to choose which controls to apply within your initiative, then align your implementation strategy and metrics with your desired outcomes.",
+      "date_published": "2023-06-30T21:52:11Z",
+      "date_modified": "2025-04-12T02:51:02Z",
+      "_metadata": {
+        "bomLink": "urn:cdx:ae8be72e-a3fe-42d3-a578-05af69a5bc45/1#bsimm-v14",
+        "version": "14",
+        "owner": "Synopsys, Inc."
+      },
+      "attachments": [
+        {
+          "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/BSIMM/bsimm-v14.cdx.json",
           "mime_type": "application/vnd.cyclonedx+json"
         }
       ]
