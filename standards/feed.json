@@ -28,6 +28,26 @@
       ]
     },
     {
+      "id": "application-security-verification-standard-asvs-@5.0.0",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/OWASP/ASVS/asvs-5.0.0.cdx.json",
+      "title": "Application Security Verification Standard (ASVS)",
+      "content_text": null,
+      "summary": "The Application Security Verification Standard is a list of application security requirements that architects, developers, testers, security professionals, tool vendors, and consumers can use to define, build, test, and verify secure applications.",
+      "date_published": "2026-04-14T21:58:53Z",
+      "date_modified": "2026-04-15T02:14:52Z",
+      "_metadata": {
+        "bomLink": "urn:cdx:de577f31-b238-45b2-9c30-83ca0f44ca81/1#ASVS-5.0.0",
+        "version": "5.0.0",
+        "owner": "Application Security Verification Standard Project"
+      },
+      "attachments": [
+        {
+          "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/OWASP/ASVS/asvs-5.0.0.cdx.json",
+          "mime_type": "application/vnd.cyclonedx+json"
+        }
+      ]
+    },
+    {
       "id": "secure-software-development-attestation-form@DRAFT-2023-11",
       "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/CISA/SSAF/ssaf-DRAFT-2023-11.cdx.json",
       "title": "Secure Software Development Attestation Form",
