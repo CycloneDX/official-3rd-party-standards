@@ -8,6 +8,26 @@
   "favicon": "https://cyclonedx.org/favicon.ico",
   "items": [
     {
+      "id": "owasp-software-assurance-maturity-model-samm-@2.1.0",
+      "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/OWASP/SAMM/owasp-samm-2.1.0.cdx.json",
+      "title": "OWASP Software Assurance Maturity Model (SAMM)",
+      "content_text": null,
+      "summary": "OWASP SAMM (Software Assurance Maturity Model) is an open framework to help organizations formulate and implement a strategy for software security that is tailored to the specific risks facing the organization. SAMM provides a means of evaluating an organization's existing software security practices, building a balanced software security assurance program in well-defined iterations, demonstrating concrete improvements to a security assurance program, and defining and measuring security-related activities throughout an organization.",
+      "date_published": "2026-04-15T02:10:19Z",
+      "date_modified": "2026-04-15T02:10:19Z",
+      "_metadata": {
+        "bomLink": "urn:cdx:4b953291-4f2a-40a5-829f-26b4acf23917/1#owasp-samm-2.1.0",
+        "version": "2.1.0",
+        "owner": "OWASP Foundation"
+      },
+      "attachments": [
+        {
+          "url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/OWASP/SAMM/owasp-samm-2.1.0.cdx.json",
+          "mime_type": "application/vnd.cyclonedx+json"
+        }
+      ]
+    },
+    {
       "id": "secure-software-development-attestation-form@DRAFT-2023-11",
       "external_url": "https://raw.githubusercontent.com/CycloneDX/official-3rd-party-standards/main/standards/CISA/SSAF/ssaf-DRAFT-2023-11.cdx.json",
       "title": "Secure Software Development Attestation Form",
