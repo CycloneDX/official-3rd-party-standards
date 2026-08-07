@@ -14,7 +14,7 @@ attestation_generator = "attestation_generator.main:generator"
 python = "^3.10"
 openpyxl = "^3.1.2"
 install = "^1.3.5"
-jinja2 = "^3.1.2"
+jinja2 = "^3.1.3"
 
 
 [tool.poetry.group.dev.dependencies]
